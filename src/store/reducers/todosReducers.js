@@ -29,9 +29,9 @@ const initial = {
   text: 'test'
 }
 
-const todosReducer = createReducer([initial], {
+const todosReducers = createReducer([initial], {
   ADD_TODO: addTodo,
   EDIT_TODO: editTodo
 })
 
-export { todosReducer }
+export { todosReducers }

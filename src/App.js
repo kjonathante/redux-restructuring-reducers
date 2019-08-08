@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addTodo } from './store/actions/todoActions'
+import { addTodo } from './store/actions/todosActions'
 
 function App(props) {
   return (

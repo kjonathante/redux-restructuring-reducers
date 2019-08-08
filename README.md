@@ -1,5 +1,15 @@
 # Redux
 
+## Naming convention
+
+## Folder Structure
+```
+  store
+    actions
+      todosActions
+    reducers
+      todosReducers
+```
 ## Shape
 ```javascript
 {
@@ -75,7 +85,7 @@ export function addTodo(text) {
 }
 ```
 
-## react index
+## React index.js
 ```javascript
 import React from 'react'
 import ReactDOM from 'react-dom'

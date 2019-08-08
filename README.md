@@ -1,68 +1,129 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Redux
 
-## Available Scripts
+## Shape
+```javascript
+{
+  [
+    {
+      id: 0
+      text: '...'
+      statue: boolean
+    }
+  ]
+}
+```
 
-In the project directory, you can run:
+## Reducer
+```javascript
+// index.js
+import { combineReducers } from 'redux'
+import { todosReducer } from './todosReducer'
 
-### `npm start`
+export default combineReducers({
+  todos: todosReducer
+})
+```
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+``` javascript
+// todosReducer.js
+import {
+  createReducer,
+  updateItemInArray,
+  updateObject
+} from './reducerUtilities'
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+// Case reducer
+function addTodo(todosState, action) {
+  const newTodos = todosState.concat({
+    id: action.id,
+    text: action.text,
+    completed: false
+  })
 
-### `npm test`
+  return newTodos
+}
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+// Case reducer
+function editTodo(todosState, action) {
+  const newTodos = updateItemInArray(todosState, action.id, todo => {
+    return updateObject(todo, { text: action.text })
+  })
 
-### `npm run build`
+  return newTodos
+}
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+const initial = {
+  id: 1,
+  text: 'test'
+}
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+const todosReducer = createReducer([initial], {
+  ADD_TODO: addTodo,
+  EDIT_TODO: editTodo
+})
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+export { todosReducer }
+```
 
-### `npm run eject`
+## Actions
+```javascript
+// todoAction.js
+export const ADD_TODO = 'ADD_TODO'
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+export function addTodo(text) {
+  return { type: ADD_TODO, text }
+}
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## react index
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import * as serviceWorker from './serviceWorker'
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import rootReducer from './store/reducer'
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+const store = createStore(rootReducer)
 
-## Learn More
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## React component
+```javascript
+import React from 'react'
+import { connect } from 'react-redux'
+import { addTodo } from './store/actions/todoActions'
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+function App(props) {
+  return (
+    <div>
+      {props.todos.map(todo => (
+        <p key={todo.id}>{todo.text}</p>
+      ))}
+    </div>
+  )
+}
 
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+const mapStateToProps = state => {
+  console.log(state)
+  return { todos: state.todos }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    // dispatching plain actions
+    addTodo: text => dispatch(addTodo(text))
+  }
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
+```

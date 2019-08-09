@@ -10,6 +10,7 @@
     reducers
       todosReducers
 ```
+
 ## Shape
 ```javascript
 {
@@ -45,7 +46,7 @@ import {
 // Case reducer
 function addTodo(todosState, action) {
   const newTodos = todosState.concat({
-    id: action.id,
+    id: todosState.length,
     text: action.text,
     completed: false
   })
@@ -62,17 +63,12 @@ function editTodo(todosState, action) {
   return newTodos
 }
 
-const initial = {
-  id: 1,
-  text: 'test'
-}
-
-const todosReducer = createReducer([initial], {
+const todosReducers = createReducer([], {
   ADD_TODO: addTodo,
   EDIT_TODO: editTodo
 })
 
-export { todosReducer }
+export { todosReducers }
 ```
 
 ## Actions
@@ -94,7 +90,7 @@ import * as serviceWorker from './serviceWorker'
 
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import rootReducer from './store/reducer'
+import rootReducer from './store/reducers'
 
 const store = createStore(rootReducer)
 
@@ -110,14 +106,19 @@ ReactDOM.render(
 ```javascript
 import React from 'react'
 import { connect } from 'react-redux'
-import { addTodo } from './store/actions/todoActions'
+import { addTodo } from './store/actions/todosActions'
 
 function App(props) {
+  function handleClick() {
+    props.addTodo('something')
+  }
+
   return (
     <div>
       {props.todos.map(todo => (
         <p key={todo.id}>{todo.text}</p>
       ))}
+      <button onClick={handleClick}>Add</button>
     </div>
   )
 }

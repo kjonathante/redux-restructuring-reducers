@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { addTodo } from './store/actions/todosActions'
 
 function App(props) {
-  function handleClick(){
-    props.addTodo("something")
+  function handleClick() {
+    props.addTodo('something')
   }
 
   return (

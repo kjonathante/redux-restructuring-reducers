@@ -22,7 +22,7 @@ export function updateItemInArray(array, itemId, updateItemCallback) {
 }
 
 export function createReducer(initialState, handlers) {
-  console.log(handlers)
+  // console.log(handlers)
   return function(state = initialState, action) {
     if (handlers.hasOwnProperty(action.type)) {
       return handlers[action.type](state, action)

@@ -7,7 +7,7 @@ import {
 // Case reducer
 function addTodo(todosState, action) {
   const newTodos = todosState.concat({
-    id: action.id,
+    id: todosState.length,
     text: action.text,
     completed: false
   })
@@ -24,12 +24,7 @@ function editTodo(todosState, action) {
   return newTodos
 }
 
-const initial = {
-  id: 1,
-  text: 'test'
-}
-
-const todosReducers = createReducer([initial], {
+const todosReducers = createReducer([], {
   ADD_TODO: addTodo,
   EDIT_TODO: editTodo
 })

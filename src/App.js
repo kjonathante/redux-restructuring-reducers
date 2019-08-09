@@ -3,11 +3,16 @@ import { connect } from 'react-redux'
 import { addTodo } from './store/actions/todosActions'
 
 function App(props) {
+  function handleClick(){
+    props.addTodo("something")
+  }
+
   return (
     <div>
       {props.todos.map(todo => (
         <p key={todo.id}>{todo.text}</p>
       ))}
+      <button onClick={handleClick}>Add</button>
     </div>
   )
 }

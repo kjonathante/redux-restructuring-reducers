@@ -21,12 +21,18 @@ const mapStateToProps = state => {
   console.log(state)
   return { todos: state.todos }
 }
-const mapDispatchToProps = dispatch => {
-  return {
-    // dispatching plain actions
-    addTodo: text => dispatch(addTodo(text))
-  }
-}
+
+// option #1, as a function
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     // dispatching plain actions
+//     addTodo: text => dispatch(addTodo(text))
+//   }
+// }
+
+// option #2, as an object
+const mapDispatchToProps = { addTodo }
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

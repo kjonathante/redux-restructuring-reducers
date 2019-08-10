@@ -7,7 +7,15 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import rootReducer from './store/reducers'
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, {
+  todos: [
+    {
+      id: 0,
+      text: "initial",
+      completed: false
+    }
+  ]
+})
 
 ReactDOM.render(
   <Provider store={store}>
